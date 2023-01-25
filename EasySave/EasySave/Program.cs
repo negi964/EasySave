@@ -11,6 +11,8 @@ namespace EasySave
         static void Main(string[] args)
         {
             Console.WriteLine("HelloWorld");
+
+            Console.WriteLine("test");
         }
     }
 }
