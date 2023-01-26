@@ -1,7 +1,13 @@
-FROM microsoft/dotnet-framework:4.7.2-sdk 
-COPY . /app
-WORKDIR /app
-RUN cd EasySave && dotnet build
-RUN dotnet EasySave.dll
+FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
+
+WORKDIR /source
+COPY . .
+RUN dotnet restore "EasySave.csproj" --disable-parallel
+RUN dotnet publish "EasySave.csproj" -c release -o /app --no-restore
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0-focal
+WORKDIR /app 
+COPY --from=build /app ./
+
 EXPOSE 5000
-ENTRYPOINT ["dotnet", "run"]
+ENTRYPOINT ["dotnet", "EasySave.dll"]
