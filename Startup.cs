@@ -4,12 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasySave.Startup { 
-class Startup
-{
-     static void Main(string[] args)
+//Import des éléments du namespace EasySave
+using EasySave.View;
+
+namespace EasySave
+{ 
+    class Startup
     {
-        Console.WriteLine("Hello world");
+        static void Main(string[] args)
+        {
+            new SaveView();
+            Console.WriteLine("SaveView chargé");
+        }
     }
-}
 }
