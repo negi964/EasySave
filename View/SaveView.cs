@@ -12,11 +12,9 @@ namespace EasySave.View
 {
     public class SaveView
     {
-        private string numOption;
+        public int numOption { get; set; }
         public SaveView()
         {
-            new SaveViewModel(this);
-
             Console.WriteLine(" _______     ___           _______.____    ____  _______.     ___   ____    ____  _______ \r\n|   ____|   /   \\         /       |\\   \\  /   / /       |    /   \\  \\   \\  /   / |   ____|\r\n|  |__     /  ^  \\       |   (----` \\   \\/   / |   (----`   /  ^  \\  \\   \\/   /  |  |__   \r\n|   __|   /  /_\\  \\       \\   \\      \\_    _/   \\   \\      /  /_\\  \\  \\      /   |   __|  \r\n|  |____ /  _____  \\  .----)   |       |  | .----)   |    /  _____  \\  \\    /    |  |____ \r\n|_______/__/     \\__\\ |_______/        |__| |_______/    /__/     \\__\\  \\__/     |_______|\r\n                                                                                          ");
             Console.WriteLine("");
             Console.WriteLine("Bienvenue !");
@@ -29,7 +27,9 @@ namespace EasySave.View
             Console.WriteLine("[4]. Supprimer une sauvegarde");
             Console.WriteLine("");
             Console.Write("Entrer un chiffre : ");
-            numOption = Console.ReadLine();
+            numOption = Int32.Parse(Console.ReadLine());
+
+            new SaveViewModel(this);
         }
     }
 }
