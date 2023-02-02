@@ -18,11 +18,10 @@ namespace EasySave.Model
         public string DestinationRepo { get; set; } 
         public SaveType Type { get; set; }
 
-        private SaveViewModel saveViewModel;
+        private SaveViewModel _saveViewModel;
         public SaveModel(SaveViewModel saveViewModel)
         {
-            this.saveViewModel = saveViewModel;
-            Console.WriteLine("SaveModel chargé");
+            _saveViewModel = saveViewModel;
         }
     }
 }

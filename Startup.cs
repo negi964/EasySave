@@ -14,7 +14,6 @@ namespace EasySave
         static void Main(string[] args)
         {
             new SaveView();
-            Console.WriteLine("SaveView chargé");
         }
     }
 }
