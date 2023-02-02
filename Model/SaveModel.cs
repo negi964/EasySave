@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 //Import des éléments du namespace EasySave
-using EasySave.Model;
-using EasySave.View;
 using EasySave.View_Model;
 
 namespace EasySave.Model
