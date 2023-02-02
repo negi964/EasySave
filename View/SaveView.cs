@@ -15,8 +15,13 @@ namespace EasySave.View
 {
     public class SaveView
     {
-        public int numOption { get; set; }
+        public string numOption { get; set; }
         public SaveView()
+        {
+            this.Welcome();
+        }
+
+        public void Welcome()
         {
             ResourceManager rm = new ResourceManager("EasySave.Lang.Ressource", Assembly.GetExecutingAssembly());
 
@@ -30,10 +35,9 @@ namespace EasySave.View
             Console.WriteLine($"{rm.GetString("FourthOption", CultureInfo.CurrentUICulture)}\n");
             Console.Write($"{rm.GetString("SelectOption", CultureInfo.CurrentUICulture)}");
 
-            numOption = Int32.Parse(Console.ReadLine());
+            numOption = Console.ReadLine();
 
             new SaveViewModel(this);
-
         }
     }
 }
