@@ -19,9 +19,8 @@ namespace EasySave.View_Model
         {
             this.saveView = saveView;
             new SaveModel(this);
-            Console.WriteLine("SaveViewModel chargé");
 
-            this.numOption = this.saveView.numOption;
+            this.numOption = Int32.Parse(this.saveView.numOption);
 
             switch (this.numOption)
             {
@@ -35,7 +34,7 @@ namespace EasySave.View_Model
                     break;
 
                 default:
-                    Console.WriteLine("Aucun");
+                    this.saveView.Welcome();
                     break;
             }
         }
