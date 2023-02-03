@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 //Import des éléments du namespace EasySave
-using EasySave.Model;
-using EasySave.View;
 using EasySave.View_Model;
 
 namespace EasySave.Model
@@ -18,11 +16,10 @@ namespace EasySave.Model
         public string DestinationRepo { get; set; } 
         public SaveType Type { get; set; }
 
-        private SaveViewModel saveViewModel;
+        private SaveViewModel _saveViewModel;
         public SaveModel(SaveViewModel saveViewModel)
         {
-            this.saveViewModel = saveViewModel;
-            Console.WriteLine("SaveModel chargé");
+            _saveViewModel = saveViewModel;
         }
     }
 }
