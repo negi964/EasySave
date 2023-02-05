@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
+using NewtonsoftJson = Newtonsoft.Json;
 using EasySave.Model;
 
 //Import des éléments du namespace EasySave
 using EasySave.View;
+using System.Xml;
 
 namespace EasySave.View_Model
 {
@@ -15,7 +17,7 @@ namespace EasySave.View_Model
     {
         private SaveView saveView;
         private int numOption;
-        class Backup
+        class BackupConfig
         {
             public string Name { get; set; }
             public string SourceDirectory { get; set; }
@@ -27,7 +29,7 @@ namespace EasySave.View_Model
         {
             this.saveView = saveView;
             new SaveModel(this);
-            string[] files = Directory.GetFiles(@"C:\Users\2216074\OneDrive - Association Cesi Viacesi mail\Bureau\Portfolio\FISA A3\C#\EasySave\BackupConfigurations\", "*.txt");
+            string[] files = Directory.GetFiles(@"C:\Users\2216074\OneDrive - Association Cesi Viacesi mail\Bureau\Portfolio\FISA A3\C#\EasySave\BackupConfigurations\", "*.json");
 
             this.numOption = Int32.Parse(this.saveView.numOption);
 
@@ -37,43 +39,43 @@ namespace EasySave.View_Model
                     break;
                 case 2: Console.WriteLine("choix de la création de sauvegarde");
 
-                    Console.WriteLine("Entrez l'appellation :");
+                    Console.WriteLine("Entrez une appellation pour la configuration de sauvegarde :");
                     string name = Console.ReadLine();
 
-                    Console.WriteLine("Entrez le répertoire source :");
+                    Console.WriteLine("\nEntrez le répertoire source :");
                     string sourceDirectory = Console.ReadLine();
 
-                    Console.WriteLine("Entrez le répertoire cible :");
+                    Console.WriteLine("\nEntrez le répertoire cible :");
                     string targetDirectory = Console.ReadLine();
 
-                    Console.WriteLine("Entrez le type de sauvegarde :");
+                    Console.WriteLine("\nEntrez le type de sauvegarde (complet/différentiel) :");
                     string backupType = Console.ReadLine();
 
-                    Console.WriteLine("\nConfiguration de sauvegarde créée avec succès :");
-                    Console.WriteLine("Appellation : " + name);
-                    Console.WriteLine("Répertoire source : " + sourceDirectory);
-                    Console.WriteLine("Répertoire cible : " + targetDirectory);
-                    Console.WriteLine("Type de sauvegarde : " + backupType);
+                    BackupConfig config = new BackupConfig
+                    {
+                        Name = name,
+                        SourceDirectory = sourceDirectory,
+                        TargetDirectory = targetDirectory,
+                        BackupType = backupType
+                    };
+
+                    string CreatePath = @"C:\Users\2216074\OneDrive - Association Cesi Viacesi mail\Bureau\Portfolio\FISA A3\C#\EasySave\BackupConfigurations\" + name + ".json";
 
                     try
                     {
-                        string SaveConfiguration = name + "\n" + sourceDirectory + "\n" + targetDirectory + "\n" + backupType;
-                        string FileName = @"C:\Users\2216074\OneDrive - Association Cesi Viacesi mail\Bureau\Portfolio\FISA A3\C#\EasySave\BackupConfigurations\" + name + ".txt";
-
-                        if (!Directory.Exists(@"C:\Users\2216074\OneDrive - Association Cesi Viacesi mail\Bureau\Portfolio\FISA A3\C#\EasySave\BackupConfigurations\"))
+                        using (StreamWriter writer = new StreamWriter(CreatePath))
                         {
-                            Directory.CreateDirectory(@"C:\Users\2216074\OneDrive - Association Cesi Viacesi mail\Bureau\Portfolio\FISA A3\C#\EasySave\BackupConfigurations\");
+                            string json = NewtonsoftJson.JsonConvert.SerializeObject(config, NewtonsoftJson.Formatting.Indented);
+                            writer.WriteLine(json);
                         }
-
-                        File.WriteAllText(FileName, SaveConfiguration);
-                        Console.WriteLine("\nLa configuration a été enregistrée avec succès dans " + FileName);
+                        Console.WriteLine("\nLa configuration de sauvegarde a été enregistrée avec succès.");
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine("\nUne erreur s'est produite lors de l'enregistrement de la configuration : " + ex.Message);
                     }
 
-                    Console.ReadLine();
+
                     Console.ReadLine();
                     break;
 
@@ -88,23 +90,22 @@ namespace EasySave.View_Model
 
                     Console.WriteLine("\nEntrez le numéro de la configuration à modifier :");
                     int option = Convert.ToInt32(Console.ReadLine());
-
                     string ModifyPath = files[option - 1];
                     string[] configuration = File.ReadAllLines(ModifyPath);
 
                     Console.WriteLine("\nConfiguration actuelle :");
-                    Console.WriteLine("Appellation : " + configuration[0]);
-                    Console.WriteLine("Répertoire source : " + configuration[1]);
-                    Console.WriteLine("Répertoire cible : " + configuration[2]);
-                    Console.WriteLine("Type de sauvegarde : " + configuration[3]);
+                    Console.WriteLine("Appellation : " + configuration[1]);
+                    Console.WriteLine("Répertoire source : " + configuration[2]);
+                    Console.WriteLine("Répertoire cible : " + configuration[3]);
+                    Console.WriteLine("Type de sauvegarde : " + configuration[4]);
 
                     Console.WriteLine("\nEntrez le nouvel élément à modifier (1 = appellation, 2 = source, 3 = cible, 4 = type) :");
-                    int modifyOption = Convert.ToInt32(Console.ReadLine());
+                    int ModifyOption = Convert.ToInt32(Console.ReadLine());
 
                     Console.WriteLine("Entrez la nouvelle valeur :");
                     string newValue = Console.ReadLine();
 
-                    configuration[modifyOption - 1] = newValue;
+                    configuration[ModifyOption] = newValue;
 
                     try
                     {
