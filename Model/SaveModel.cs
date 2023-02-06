@@ -34,7 +34,7 @@ namespace EasySave.Model
             this.saveViewModel = saveViewModel;
         }
 
-        public void CreerUneSauvegarde()
+        public void CreateSave()
         {
             Console.WriteLine("Entrez une appellation pour la configuration de sauvegarde :");
             string name = Console.ReadLine();
@@ -74,7 +74,7 @@ namespace EasySave.Model
             Console.ReadLine();
         }
 
-        public void ModifierSauvegarde()
+        public void EditSave()
         {
             Console.WriteLine("Liste des configurations de sauvegarde existantes :");
 
@@ -115,7 +115,7 @@ namespace EasySave.Model
             Console.ReadLine();
         }
 
-        public void SuppressionSauvegarde()
+        public void DeleteSave()
         {
             Console.WriteLine("Liste des configurations de sauvegarde existantes :");
 
