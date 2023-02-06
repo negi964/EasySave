@@ -30,15 +30,15 @@ namespace EasySave.View_Model
                 case 1: Console.WriteLine("choix du changement de langue");
                     break;
                 case 2: Console.WriteLine("choix de la création de sauvegarde");
-                    this.saveModel.CreerUneSauvegarde();
+                    this.saveModel.CreateSave();
                     break;
 
                 case 3: Console.WriteLine("choix de la modification de sauvegarde");
-                    this.saveModel.ModifierSauvegarde();
+                    this.saveModel.EditSave();
                     break;
 
                 case 4: Console.WriteLine("choix de la suppression de sauvegarde");
-                    this.saveModel.SuppressionSauvegarde();
+                    this.saveModel.DeleteSave();
                     break;
 
                 default:
