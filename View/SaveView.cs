@@ -35,6 +35,7 @@ namespace EasySave.View
                 case 1:
                     Console.WriteLine("choix du changement de langue");
                     break;
+
                 case 2:
                     Console.WriteLine("choix de la création de sauvegarde");
                     _createSaveView.Show();
@@ -82,5 +83,6 @@ namespace EasySave.View
 
             new SaveViewModel(this);
         }
+
     }
 }

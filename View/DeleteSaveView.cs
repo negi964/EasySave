@@ -10,7 +10,7 @@ namespace EasySave.View
     {
         public DeleteSaveView() { }
 
-        public string Show()
+        public void Show()
         {
 
         }

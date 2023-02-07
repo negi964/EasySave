@@ -12,7 +12,7 @@ namespace EasySave.View
         {
 
         }
-        public string Show()
+        public void Show()
         {
 
         }

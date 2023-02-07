@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
-
+using EasySave.View;
 using NewtonsoftJson = Newtonsoft.Json;
 
 //Import des éléments du namespace EasySave
@@ -24,19 +24,12 @@ namespace EasySave.Model
 
         public static string[] files = Directory.GetFiles(@"C:\..\..\AppData\Roaming\backupconfigs", "*.json");
 
-        class BackupConfig
-        {
-            public string BackupName { get; set; }
-            public string SourceDirectory { get; set; }
-            public string TargetDirectory { get; set; }
-            public string BackupType { get; set; }
-        }
         public SaveModel(SaveViewModel saveViewModel)
         {
             this.saveViewModel = saveViewModel;
         }
 
-        public void CreateSave()
+        public void CreateSave(BackupConfig backupConfig)
         {
             var backupConfigs = new List<BackupConfig>();
             string backupConfigFile = @"C:\..\..\AppData\Roaming\backupconfigs.json";
@@ -46,49 +39,12 @@ namespace EasySave.Model
                 backupConfigs = JsonConvert.DeserializeObject<List<BackupConfig>>(File.ReadAllText(backupConfigFile));
             }
 
-            while (true)
+            if (backupConfigs.Count == 5)
             {
-                Console.WriteLine("1. Créer une sauvegarde");
-                Console.WriteLine("2. Quitter");
-                Console.Write("Quel est votre choix : ");
-
-                int choice = int.Parse(Console.ReadLine());
-                if (choice == 2)
-                {
-                    break;
-                }
-
-                if (choice == 1)
-                {
-                    if (backupConfigs.Count == 5)
-                    {
-                        Console.WriteLine("Le nombre maximum est atteint veuillez en supprimer une");
-                        continue;
-                    }
-
-                    Console.Write("Nom : ");
-                    string backupName = Console.ReadLine();
-
-                    Console.Write("Chemin source : ");
-                    string sourceDirectory = Console.ReadLine();
-
-                    Console.Write("Chemin destination : ");
-                    string targetDirectory = Console.ReadLine();
-
-                    Console.Write("Type de sauvegarde : ");
-                    string backupType = Console.ReadLine();
-
-                    backupConfigs.Add(new BackupConfig
-                    {
-                        BackupName = backupName,
-                        SourceDirectory = sourceDirectory,
-                        TargetDirectory = targetDirectory,
-                        BackupType = backupType
-                    });
-
-                    File.WriteAllText(backupConfigFile, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
-                }
+                Console.WriteLine("Le nombre maximum est atteint veuillez en supprimer une");
             }
+
+            File.WriteAllText(backupConfigFile, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
         }
 
         public void EditSave()
