@@ -14,10 +14,44 @@ namespace EasySave.View
 {
     public class SaveView
     {
-        public string numOption { get; set; }
+        public int _numOption { get; set; }
+
+        private CopyView _copyView;
         public SaveView()
         {
+            _copyView = new CopyView();
+
             this.Welcome();
+
+            switch (_numOption)
+            {
+                case 1:
+                    Console.WriteLine("choix du changement de langue");
+                    break;
+                case 2:
+                    Console.WriteLine("choix de la création de sauvegarde");
+                    _saveModel.CreateSave();
+                    break;
+
+                case 3:
+                    Console.WriteLine("choix de la modification de sauvegarde");
+                    _saveModel.EditSave();
+                    break;
+
+                case 4:
+                    Console.WriteLine("choix de la suppression de sauvegarde");
+                    _saveModel.DeleteSave();
+                    break;
+
+                case 5:
+                    Console.WriteLine("Lancement d'une sauvegarde");
+                    _copyView.Show();
+                    break;
+
+                default:
+                    saveView.Welcome();
+                    break;
+            }
         }
 
         public void Welcome()
@@ -37,7 +71,7 @@ namespace EasySave.View
             Console.WriteLine($"{rm.GetString("FifthOption", CultureInfo.CurrentUICulture)}\n");
             Console.Write($"{rm.GetString("SelectOption", CultureInfo.CurrentUICulture)}");
 
-            numOption = Console.ReadLine();
+            _numOption = Int32.Parse(Console.ReadLine());
 
 
             new SaveViewModel(this);
