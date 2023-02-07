@@ -10,39 +10,48 @@ using EasySave.Model;
 //Import des éléments du namespace EasySave
 using EasySave.View;
 using System.Xml;
+using System.Security.Cryptography.X509Certificates;
 
 namespace EasySave.View_Model
 {
     public class SaveViewModel
     {
-        private SaveView saveView;
-        private int numOption;
-        private SaveModel saveModel;
+        private SaveView _saveView;
+        private int _numOption;
+        private SaveModel _saveModel;
+        private CopyView _copyView;
 
         public SaveViewModel(SaveView saveView)
         {
-            this.saveView = saveView;
-            this.saveModel = new SaveModel(this);
-            this.numOption = Int32.Parse(this.saveView.numOption);
+            _saveView = saveView;
+            _saveModel = new SaveModel(this);
+            _copyView = new CopyView();
+            
+            
+            _numOption = Int32.Parse(saveView.numOption);
 
-            switch (this.numOption)
+            switch (_numOption)
             {
                 case 1: Console.WriteLine("choix du changement de langue");
                     break;
                 case 2: Console.WriteLine("choix de la création de sauvegarde");
-                    this.saveModel.CreateSave();
+                    _saveModel.CreateSave();
                     break;
 
                 case 3: Console.WriteLine("choix de la modification de sauvegarde");
-                    this.saveModel.EditSave();
+                    _saveModel.EditSave();
                     break;
 
                 case 4: Console.WriteLine("choix de la suppression de sauvegarde");
-                    this.saveModel.DeleteSave();
+                    _saveModel.DeleteSave();
+                    break;
+
+                case 5: Console.WriteLine("Lancement d'une sauvegarde");
+                    _copyView.Show();
                     break;
 
                 default:
-                    this.saveView.Welcome();
+                    saveView.Welcome();
                     break;
             }
         }
