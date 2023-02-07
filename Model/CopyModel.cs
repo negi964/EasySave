@@ -52,7 +52,7 @@ namespace EasySave.Model
 
                 else
                 {
-
+                     
                     var sourceFolderInfo = new DirectoryInfo(sourceFile);
                     long totalSize = GetDirectorySize(sourceFolderInfo);
                     long totalBytes = 0;

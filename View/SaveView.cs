@@ -4,23 +4,66 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Globalization;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
 //Import des éléments du namespace EasySave
 using EasySave.View_Model;
+using System.Text.RegularExpressions;
 
 namespace EasySave.View
 {
     public class SaveView
     {
-        public string numOption { get; set; }
+        private CopyView _copyView;
+        private CreateView _createSaveView;
+        private EditView _editSaveView;
+        private DeleteView _deleteSaveView;
+        private SaveViewModel _saveViewModel;
+
         public SaveView()
         {
-            this.Welcome();
+            _copyView = new CopyView();
+            _createSaveView = new CreateView();
+            _editSaveView = new EditView();
+            _deleteSaveView = new DeleteView();
+            int numOption = 0;
+            numOption = Welcome();
+
+            switch (numOption)
+            {
+                case 1:
+                    Console.WriteLine("choix du changement de langue");
+                    break;
+
+                case 2:
+                    Console.WriteLine("choix de la création de sauvegarde");
+                    _createSaveView.Show();
+                    break;
+
+                case 3:
+                    Console.WriteLine("choix de la modification de sauvegarde");
+                    _editSaveView.Show();
+                    break;
+
+                case 4:
+                    Console.WriteLine("choix de la suppression de sauvegarde");
+                    _deleteSaveView.Show();
+                    break;
+
+                case 5:
+                    Console.WriteLine("Lancement d'une sauvegarde");
+                    _copyView.Show();
+                    break;
+
+                default:
+                    numOption = Welcome();
+                    break;
+            }
         }
 
-        public void Welcome()
+        public int Welcome()
         {
             Console.Title = "EasySave";
             Console.Clear();
@@ -36,12 +79,21 @@ namespace EasySave.View
             Console.Write($"{rm.GetString("FourthOption", CultureInfo.CurrentUICulture)}\n");
             Console.WriteLine($"{rm.GetString("FifthOption", CultureInfo.CurrentUICulture)}\n");
             Console.Write($"{rm.GetString("SelectOption", CultureInfo.CurrentUICulture)}");
+            string ans = Console.ReadLine();
+            int numOption = 0;
+            if (int.TryParse(ans, out _))
+            {
+                numOption = Int32.Parse(ans);
+                return numOption;
+            }
+            else
+            {
+                numOption = Welcome();
+                return numOption;
 
-            numOption = Console.ReadLine();
-
-
-            new SaveViewModel(this);
+            }
 
         }
+
     }
 }

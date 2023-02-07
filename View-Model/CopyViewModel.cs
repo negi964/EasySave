@@ -14,6 +14,7 @@ namespace EasySave.View_Model
         public CopyViewModel()
         {
         }
+
         public void GetCopyModel(string source, string destination)
         {
             var copyModel = new CopyModel();
