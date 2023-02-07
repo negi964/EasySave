@@ -33,8 +33,7 @@ namespace EasySave.View
             switch (_numOption)
             {
                 case 1:
-                    Console.WriteLine("Lancement d'une sauvegarde");
-                    _copyView.Show();
+                    Console.WriteLine("choix du changement de langue");
                     break;
                 case 2:
                     Console.WriteLine("choix de la création de sauvegarde");
@@ -52,7 +51,8 @@ namespace EasySave.View
                     break;
 
                 case 5:
-                    Console.WriteLine("choix du changement de langue");
+                    Console.WriteLine("Lancement d'une sauvegarde");
+                    _copyView.Show();
                     break;
 
                 default:
