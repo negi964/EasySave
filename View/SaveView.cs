@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 //Import des éléments du namespace EasySave
 using EasySave.View_Model;
+using System.Text.RegularExpressions;
 
 namespace EasySave.View
 {
@@ -79,9 +80,18 @@ namespace EasySave.View
             Console.WriteLine($"{rm.GetString("FifthOption", CultureInfo.CurrentUICulture)}\n");
             Console.Write($"{rm.GetString("SelectOption", CultureInfo.CurrentUICulture)}");
 
-            _numOption = Int32.Parse(Console.ReadLine());
+            numOption = Console.ReadLine();
+            bool isInt = int.TryParse(numOption, out _);
+            if (isInt) 
+            {
+                new SaveViewModel(this);
 
-            new SaveViewModel(this);
+            }
+            else
+            {
+                Welcome();
+            }
+
         }
 
     }
