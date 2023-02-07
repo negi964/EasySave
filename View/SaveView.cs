@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Globalization;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,39 +18,45 @@ namespace EasySave.View
         public int _numOption { get; set; }
 
         private CopyView _copyView;
+        private CreateSaveView _createSaveView;
+        private EditSaveView _editSaveView;
+        private DeleteSaveView _deleteSaveView;
         public SaveView()
         {
             _copyView = new CopyView();
+            _createSaveView = new CreateSaveView();
+            _editSaveView = new EditSaveView();
+            _deleteSaveView = new DeleteSaveView();
 
-            this.Welcome();
+            Welcome();
 
             switch (_numOption)
             {
                 case 1:
-                    Console.WriteLine("choix du changement de langue");
+                    Console.WriteLine("Lancement d'une sauvegarde");
+                    _copyView.Show();
                     break;
                 case 2:
                     Console.WriteLine("choix de la création de sauvegarde");
-                    _saveModel.CreateSave();
+                    _createSaveView.Show();
                     break;
 
                 case 3:
                     Console.WriteLine("choix de la modification de sauvegarde");
-                    _saveModel.EditSave();
+                    _editSaveView.Show();
                     break;
 
                 case 4:
                     Console.WriteLine("choix de la suppression de sauvegarde");
-                    _saveModel.DeleteSave();
+                    _deleteSaveView.Show();
                     break;
 
                 case 5:
-                    Console.WriteLine("Lancement d'une sauvegarde");
-                    _copyView.Show();
+                    Console.WriteLine("choix du changement de langue");
                     break;
 
                 default:
-                    saveView.Welcome();
+                    Welcome();
                     break;
             }
         }
@@ -73,9 +80,7 @@ namespace EasySave.View
 
             _numOption = Int32.Parse(Console.ReadLine());
 
-
             new SaveViewModel(this);
-
         }
     }
 }
