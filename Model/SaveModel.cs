@@ -9,6 +9,7 @@ using NewtonsoftJson = Newtonsoft.Json;
 
 //Import des éléments du namespace EasySave
 using EasySave.View_Model;
+using Newtonsoft.Json;
 
 namespace EasySave.Model
 {
@@ -16,15 +17,16 @@ namespace EasySave.Model
     {
         public string Name { get; set; }
         public string SourceRepo { get; set; }
-        public string DestinationRepo { get; set; } 
+        public string DestinationRepo { get; set; }
         public SaveType Type { get; set; }
 
         private SaveViewModel saveViewModel;
 
-        public static string[] files = Directory.GetFiles(@"C:\Users\louag\Documents\Projet programmation systeme\EasySave\bin\Debug\net6.0", "*.json");
+        public static string[] files = Directory.GetFiles(@"C:\..\..\AppData\Roaming\backupconfigs", "*.json");
+
         class BackupConfig
         {
-            public string Name { get; set; }
+            public string BackupName { get; set; }
             public string SourceDirectory { get; set; }
             public string TargetDirectory { get; set; }
             public string BackupType { get; set; }
@@ -36,109 +38,161 @@ namespace EasySave.Model
 
         public void CreateSave()
         {
-            Console.WriteLine("Entrez une appellation pour la configuration de sauvegarde :");
-            string name = Console.ReadLine();
+            var backupConfigs = new List<BackupConfig>();
+            string backupConfigFile = @"C:\..\..\AppData\Roaming\backupconfigs.json";
 
-            Console.WriteLine("\nEntrez le répertoire source :");
-            string sourceDirectory = Console.ReadLine();
-
-            Console.WriteLine("\nEntrez le répertoire cible :");
-            string targetDirectory = Console.ReadLine();
-
-            Console.WriteLine("\nEntrez le type de sauvegarde (complet/différentiel) :");
-            string backupType = Console.ReadLine();
-
-            BackupConfig config = new BackupConfig
+            if (File.Exists(backupConfigFile))
             {
-                Name = name,
-                SourceDirectory = sourceDirectory,
-                TargetDirectory = targetDirectory,
-                BackupType = backupType
-            };
+                backupConfigs = JsonConvert.DeserializeObject<List<BackupConfig>>(File.ReadAllText(backupConfigFile));
+            }
 
-            string CreatePath = @name + ".json";
-
-            try
+            while (true)
             {
-                using (StreamWriter writer = new StreamWriter(CreatePath))
+                Console.WriteLine("1. Créer une sauvegarde");
+                Console.WriteLine("2. Quitter");
+                Console.Write("Quel est votre choix : ");
+
+                int choice = int.Parse(Console.ReadLine());
+                if (choice == 2)
                 {
-                    string json = NewtonsoftJson.JsonConvert.SerializeObject(config, NewtonsoftJson.Formatting.Indented);
-                    writer.WriteLine(json);
+                    break;
                 }
-                Console.WriteLine("\nLa configuration de sauvegarde a été enregistrée avec succès.");
+
+                if (choice == 1)
+                {
+                    if (backupConfigs.Count == 5)
+                    {
+                        Console.WriteLine("Le nombre maximum est atteint veuillez en supprimer une");
+                        continue;
+                    }
+
+                    Console.Write("Nom : ");
+                    string backupName = Console.ReadLine();
+
+                    Console.Write("Chemin source : ");
+                    string sourceDirectory = Console.ReadLine();
+
+                    Console.Write("Chemin destination : ");
+                    string targetDirectory = Console.ReadLine();
+
+                    Console.Write("Type de sauvegarde : ");
+                    string backupType = Console.ReadLine();
+
+                    backupConfigs.Add(new BackupConfig
+                    {
+                        BackupName = backupName,
+                        SourceDirectory = sourceDirectory,
+                        TargetDirectory = targetDirectory,
+                        BackupType = backupType
+                    });
+
+                    File.WriteAllText(backupConfigFile, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("\nUne erreur s'est produite lors de l'enregistrement de la configuration : " + ex.Message);
-            }
-            Console.ReadLine();
         }
 
         public void EditSave()
         {
-            Console.WriteLine("Liste des configurations de sauvegarde existantes :");
+            var backupConfigs = new List<BackupConfig>();
+            string backupConfigFile = @"C:\..\..\AppData\Roaming\backupconfigs.json";
 
-            for (int i = 0; i < files.Length; i++)
+            if (File.Exists(backupConfigFile))
             {
-                Console.WriteLine(i + 1 + ". " + Path.GetFileNameWithoutExtension(files[i]));
+                backupConfigs = JsonConvert.DeserializeObject<List<BackupConfig>>(File.ReadAllText(backupConfigFile));
             }
 
-            Console.WriteLine("\nEntrez le numéro de la configuration à modifier :");
-            int option = Convert.ToInt32(Console.ReadLine());
-            string ModifyPath = files[option - 1];
-            string[] configuration = File.ReadAllLines(ModifyPath);
-
-            Console.WriteLine("\nConfiguration actuelle :");
-            Console.WriteLine("Appellation : " + configuration[1]);
-            Console.WriteLine("Répertoire source : " + configuration[2]);
-            Console.WriteLine("Répertoire cible : " + configuration[3]);
-            Console.WriteLine("Type de sauvegarde : " + configuration[4]);
-
-            Console.WriteLine("\nEntrez le nouvel élément à modifier (1 = appellation, 2 = source, 3 = cible, 4 = type) :");
-            int ModifyOption = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Entrez la nouvelle valeur :");
-            string newValue = Console.ReadLine();
-
-            configuration[ModifyOption] = newValue;
-
-            try
+            while (true)
             {
-                File.WriteAllLines(ModifyPath, configuration);
-                Console.WriteLine("\nLa configuration a été modifiée avec succès.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("\nUne erreur s'est produite lors de la modification de la configuration : " + ex.Message);
-            }
+                Console.WriteLine("1. Modifier une sauvegarde");
+                Console.WriteLine("2. Quitter");
+                Console.Write("Quel est votre choix : ");
 
-            Console.ReadLine();
+                int choice = int.Parse(Console.ReadLine());
+                if (choice == 2)
+                {
+                    break;
+                }
+
+                if (choice == 1)
+                {
+                    if (backupConfigs.Count == 0)
+                    {
+                        Console.WriteLine("Il n'y a aucune configuration à modifier");
+                        continue;
+                    }
+
+                    for (int i = 0; i < backupConfigs.Count; i++)
+                    {
+                        for (int k = 0; k < backupConfigs.Count; k++)
+                        {
+                            Console.WriteLine($"{k + 1}. {backupConfigs[k].BackupName}");
+                        }
+
+                        Console.Write("Choisir le numéro de la configuration à modifier : ");
+
+                        int configToModify = int.Parse(Console.ReadLine());
+
+                        if (configToModify > 0 && configToModify <= backupConfigs.Count)
+                        {
+                            Console.Write("Nouveau nom : ");
+                            string newBackupName = Console.ReadLine();
+
+                            Console.Write("Nouveau chemin source : ");
+                            string newSourceDirectory = Console.ReadLine();
+
+                            Console.Write("Nouveau chemin destination : ");
+                            string newTargetDirectory = Console.ReadLine();
+
+                            Console.Write("Nouveau type de sauvegarde : ");
+                            string newBackupType = Console.ReadLine();
+
+                            backupConfigs[configToModify - 1].BackupName = newBackupName;
+                            backupConfigs[configToModify - 1].SourceDirectory = newSourceDirectory;
+                            backupConfigs[configToModify - 1].TargetDirectory = newTargetDirectory;
+                            backupConfigs[configToModify - 1].BackupType = newBackupType;
+
+                            File.WriteAllText(backupConfigFile, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
+                        }
+                        else
+                        {
+                            Console.WriteLine("La configuration n'a pas été trouvée");
+                        }
+                    }
+                }
+
+            }
         }
+public void DeleteSave()
+{
+    var backupConfigs = new List<BackupConfig>();
+    string backupConfigFile = @"C:\..\..\AppData\Roaming""\backupconfigs.json";
 
-        public void DeleteSave()
-        {
-            Console.WriteLine("Liste des configurations de sauvegarde existantes :");
+    if (File.Exists(backupConfigFile))
+    {
+        backupConfigs = JsonConvert.DeserializeObject<List<BackupConfig>>(File.ReadAllText(backupConfigFile));
+    }
 
-            for (int i = 0; i < files.Length; i++)
-            {
-                Console.WriteLine(i + 1 + ". " + Path.GetFileNameWithoutExtension(files[i]));
-            }
+    Console.WriteLine("Quelle configuration souhaitez-vous supprimer?");
+    for (int i = 0; i < backupConfigs.Count; i++)
+    {
+        Console.WriteLine($"{i + 1}. {backupConfigs[i].BackupName}");
+    }
 
-            Console.WriteLine("\nEntrez le numéro de la configuration à supprimer :");
-            int DeleteOption = Convert.ToInt32(Console.ReadLine());
-            string DeletePath = files[DeleteOption - 1];
+    int configToDelete = int.Parse(Console.ReadLine());
 
-            try
-            {
-                File.Delete(DeletePath);
-                Console.WriteLine("\nLa configuration a été supprimée avec succès.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("\nUne erreur s'est produite lors de la suppression de la configuration : " + ex.Message);
-            }
-
-            Console.ReadLine();
-        }
+    if (configToDelete > 0 && configToDelete <= backupConfigs.Count)
+    {
+        backupConfigs.RemoveAt(configToDelete - 1);
+        File.WriteAllText(backupConfigFile, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
+        Console.WriteLine("La configuration a été supprimée avec succès");
+    }
+    else
+    {
+        Console.WriteLine("La configuration n'a pas été trouvée");
     }
 }
+    }
+}
+
+        
+
