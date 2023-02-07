@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace EasySave.View
 {
-    public class EditSaveView
+    public class DeleteView
     {
-        public EditSaveView()
-        {
+        public DeleteView() { }
 
-        }
         public void Show()
         {
 

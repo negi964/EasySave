@@ -16,22 +16,22 @@ namespace EasySave.View
 {
     public class SaveView
     {
-        public int _numOption { get; set; }
-
         private CopyView _copyView;
-        private CreateSaveView _createSaveView;
-        private EditSaveView _editSaveView;
-        private DeleteSaveView _deleteSaveView;
+        private CreateView _createSaveView;
+        private EditView _editSaveView;
+        private DeleteView _deleteSaveView;
+        private SaveViewModel _saveViewModel;
+
         public SaveView()
         {
             _copyView = new CopyView();
-            _createSaveView = new CreateSaveView();
-            _editSaveView = new EditSaveView();
-            _deleteSaveView = new DeleteSaveView();
+            _createSaveView = new CreateView();
+            _editSaveView = new EditView();
+            _deleteSaveView = new DeleteView();
+            int numOption = 0;
+            numOption = Welcome();
 
-            Welcome();
-
-            switch (_numOption)
+            switch (numOption)
             {
                 case 1:
                     Console.WriteLine("choix du changement de langue");
@@ -58,12 +58,12 @@ namespace EasySave.View
                     break;
 
                 default:
-                    Welcome();
+                    numOption = Welcome();
                     break;
             }
         }
 
-        public void Welcome()
+        public int Welcome()
         {
             Console.Title = "EasySave";
             Console.Clear();
@@ -79,17 +79,18 @@ namespace EasySave.View
             Console.Write($"{rm.GetString("FourthOption", CultureInfo.CurrentUICulture)}\n");
             Console.WriteLine($"{rm.GetString("FifthOption", CultureInfo.CurrentUICulture)}\n");
             Console.Write($"{rm.GetString("SelectOption", CultureInfo.CurrentUICulture)}");
-
-            numOption = Console.ReadLine();
-            bool isInt = int.TryParse(numOption, out _);
-            if (isInt) 
+            string ans = Console.ReadLine();
+            int numOption = 0;
+            if (int.TryParse(ans, out _))
             {
-                new SaveViewModel(this);
-
+                numOption = Int32.Parse(ans);
+                return numOption;
             }
             else
             {
-                Welcome();
+                numOption = Welcome();
+                return numOption;
+
             }
 
         }

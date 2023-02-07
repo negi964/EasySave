@@ -3,21 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EasySave.Model;
+using EasySave.View_Model;
 using Newtonsoft.Json;
 
 namespace EasySave.View
 {
-    public class BackupConfig
+
+    public class CreateView
     {
-        public string BackupName { get; set; }
-        public string SourceDirectory { get; set; }
-        public string TargetDirectory { get; set; }
-        public string BackupType { get; set; }
-    }
-    public class CreateSaveView
-    {
-        private BackupConfig BackupConfig { get; set; }
-        public CreateSaveView() { }
+
+        public CreateView() { }
 
         public void Show()
         {
@@ -49,13 +45,9 @@ namespace EasySave.View
                     Console.Write("Type de sauvegarde : ");
                     string backupType = Console.ReadLine();
 
-                    BackupConfig = new BackupConfig
-                    {
-                        BackupName = backupName,
-                        SourceDirectory = sourceDirectory,
-                        TargetDirectory = targetDirectory,
-                        BackupType = backupType
-                    };
+
+                    var createViewModel = new CreateViewModel();
+                    createViewModel.GetCreateModel(backupName, sourceDirectory, targetDirectory, backupType);
                 }
             }
         }

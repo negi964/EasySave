@@ -18,12 +18,10 @@ namespace EasySave.View_Model
 {
     public class SaveViewModel
     {
-        private SaveView _saveView;
         private SaveModel _saveModel;
 
-        public SaveViewModel(SaveView saveView)
+        public SaveViewModel()
         {
-            _saveView = saveView;
             _saveModel = new SaveModel(this);
         }
     }
