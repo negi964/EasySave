@@ -10,21 +10,25 @@ namespace EasySave.Model
 {
     public class EditModel
     {
-        private int configToModify;
         public EditModel()
         {
         }
 
-        public string GetListConfigToModify()
-        {
+        public void GetListConfigToModify()
+        {/*
             var backupConfigs = new List<Config>();
-            string backupConfigFile = @"C:\..\..\AppData\Roaming\backupconfigs.json";
+            var backupConfigFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Easysave\config.json";
+
+            if (File.Exists(backupConfigFile))
+            {
+                backupConfigs = JsonConvert.DeserializeObject<List<Config>>(File.ReadAllText(backupConfigFile));
+            }
 
             for (int k = 0; k < backupConfigs.Count; k++)
             {
-                throw new Exception($"{k + 1}. {backupConfigs[k].BackupName}");
+                 backupConfigs.Add($"{k + 1}. {backupConfigs[k].BackupName}");
             }
-            return null;
+            return backupConfigs;*/
         }
 
         public string EditSave(string newBackupName, string newSourceDirectory, string newTargetDirectory, string newBackupType, int configToModify)
@@ -32,7 +36,7 @@ namespace EasySave.Model
             try
             {
                 var backupConfigs = new List<Config>();
-                string backupConfigFile = @"C:\..\..\AppData\Roaming\backupconfigs.json";
+                string backupConfigFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Easysave\config.json";
 
                 if (File.Exists(backupConfigFile))
                 {

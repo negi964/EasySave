@@ -42,7 +42,6 @@ namespace EasySave.Model
                     if (backupConfigs.Count >= 5)
                     {
                         throw new Exception("Le nombre maximum de travaux de sauvegarde est atteint veuillez en supprimer un");
-                        
                     }
        
                 }
