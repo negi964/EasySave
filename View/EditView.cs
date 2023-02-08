@@ -16,7 +16,10 @@ namespace EasySave.View
 
         public void Show()
         {
-            while (true)
+            var saveView = new SaveView();
+            saveView.Welcome();
+
+            /*while (true)
             {
                 Console.WriteLine("1. Modifier une sauvegarde");
                 Console.WriteLine("2. Quitter");
@@ -53,7 +56,7 @@ namespace EasySave.View
                 }
 
 
-            }
+            }*/
         }
     }
 }

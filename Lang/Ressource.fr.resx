@@ -139,7 +139,7 @@
     <value>Entrez une option :</value>
   </data>
   <data name="ThirdOption" xml:space="preserve">
-    <value>[3]. Modifier une sauvegarde</value>
+    <value>[3]. Modifier une sauvegarde (Fonctionnalité à venir)</value>
   </data>
   <data name="Welcome" xml:space="preserve">
     <value>Bienvenue !</value>
