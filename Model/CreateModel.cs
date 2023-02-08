@@ -45,7 +45,6 @@ namespace EasySave.Model
        
                 }
                 backupConfigs.Add(config);
-                LogJsonModel.SaveLog(1,1);
                 File.WriteAllText(file, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
 
                 return "Le travail de sauvegarde est créé !";
