@@ -33,17 +33,17 @@ namespace EasySave.Model
             
 
 
-        public BackupConfig backupconfig { get; set; }
+        public Config Config { get; set; }
 
 
 
 
-        public List<BackupConfig> ReadJsonConfig(string path)
+        public List<Config> ReadJsonConfig(string path)
         {
            
             string fileContent = File.ReadAllText(path);
 
-            List<BackupConfig> JsonConfig = JsonConvert.DeserializeObject<List<BackupConfig>>(fileContent);
+            List<Config> JsonConfig = JsonConvert.DeserializeObject<List<Config>>(fileContent);
             return JsonConfig;
         }
 
@@ -53,7 +53,7 @@ namespace EasySave.Model
         {
            
             //A CHANGER IMMEDIATEMENT !
-            var listConfig = new List<BackupConfig>();
+            var listConfig = new List<Config>();
             listConfig = ReadJsonConfig("C:\\AppData\\Roaming\\backupconfigs.json");
             var listLog = new List<LogJsonModel>();
 
@@ -99,9 +99,9 @@ namespace EasySave.Model
                 // Ajouter un nouvel objet à la liste
                 log.Add(new LogJsonModel
                 {
-                    Name = backupconfig.BackupName,
-                    FileSource = backupconfig.SourceDirectory,
-                    FileTarget = backupconfig.TargetDirectory,
+                    Name = Config.BackupName,
+                    FileSource = Config.SourceDirectory,
+                    FileTarget = Config.TargetDirectory,
                     FileSize = (int)filesize,
                     TransfertTime = TransfertTime,
                     TimeStamp = DateTime.Now.ToString()
