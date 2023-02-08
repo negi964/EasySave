@@ -36,29 +36,32 @@ namespace EasySave.Model
 
         public string DeleteSave(int configToDelete)
         {
-            var backupConfigs = new List<Config>();
-            string backupConfigFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Easysave";
-            string file = Path.Combine(backupConfigFile, "config.json");
-
-            if (File.Exists(file))
+            try
             {
-                backupConfigs = JsonConvert.DeserializeObject<List<Config>>(File.ReadAllText(file));
-            }
+                var backupConfigs = new List<Config>();
+                string backupConfigFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Easysave";
+                string file = Path.Combine(backupConfigFile, "config.json");
 
-            if (configToDelete > 0 && configToDelete <= backupConfigs.Count)
-            {
-                backupConfigs.RemoveAt(configToDelete - 1);
-                File.WriteAllText(file, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
-                Console.WriteLine("La configuration a été supprimée avec succès");
-            }
-            else
-            {
-                throw new Exception("La configuration n'a pas été trouvée");
-            }
+                if (File.Exists(file))
+                {
+                    backupConfigs = JsonConvert.DeserializeObject<List<Config>>(File.ReadAllText(file));
+                }
 
-            return null;
+                if (configToDelete > 0 && configToDelete <= backupConfigs.Count)
+                {
+                    backupConfigs.RemoveAt(configToDelete - 1);
+                    File.WriteAllText(file, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
+                    return "La configuration a été supprimée avec succès";
+                }
+                else
+                {
+                    throw new Exception("La configuration n'a pas été trouvée");
+                }
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
         }
-
-
     }
 }

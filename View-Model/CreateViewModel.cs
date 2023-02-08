@@ -26,7 +26,6 @@ namespace EasySave.View_Model
                 saveView.Welcome();
             }
             
-
         }
     }
 }
