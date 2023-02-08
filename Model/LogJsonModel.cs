@@ -25,31 +25,31 @@ namespace EasySave.Model
         public float FileSize  { get; set; }
         public int TransfertTime { get; set;}
 
-        public BackupConfig backupconfig { get; set; }
+        public Config config { get; set; }
 
         public LogJsonModel() { }
 
         public LogJsonModel(string name, string fileSource, string fileTarget, float fileSize, int transfertTime)
         {
-            name = backupconfig.Name;
+            name = config.BackupName;
              TimeStamp = DateTime.Now;
-            FileSource = backupconfig.SourceDirectory;
-            FileTarget = backupconfig.TargetDirectory;
+            FileSource = config.SourceDirectory;
+            FileTarget = config.TargetDirectory;
             FileSize = fileSize;
             TransfertTime = transfertTime;
         }
 
-        public BackupConfig ReadJsonConfig(string path)
+        public Config ReadJsonConfig(string path)
         {
             string fileContent = File.ReadAllText(path);
 
-            BackupConfig JsonConfig = JsonConvert.DeserializeObject<BackupConfig>(fileContent);
+            Config JsonConfig = JsonConvert.DeserializeObject<Config>(fileContent);
             return JsonConfig;
         }
         
         
 
-        public void savelog(BackupConfig config)
+        public void savelog(Config config)
         {
             
             try

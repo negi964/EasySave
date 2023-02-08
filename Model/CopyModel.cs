@@ -11,7 +11,7 @@ namespace EasySave.Model
 {
     public class CopyModel
     {
-        public void FullCopy(string? sourceFile, string targetFile)
+        public void FullCopy(string sourceFile, string targetFile)
         {
             if (sourceFile != null)
             {
@@ -107,19 +107,40 @@ namespace EasySave.Model
         {
             long size = 0;
 
-            // Récupération de la taille des fichiers dans le dossier
+            // Récuperation de la taille des fichiers dans le dossier
             foreach (var fileInfo in directoryInfo.GetFiles())
             {
                 size += fileInfo.Length;
             }
 
-            // Récupération de la taille des sous-dossiers récursivement
+            // Récuperation de la taille des sous-dossiers récursivement
             foreach (var subDirectoryInfo in directoryInfo.GetDirectories())
             {
                 size += GetDirectorySize(subDirectoryInfo);
             }
 
             return size;
+        }
+        public void DifferentialCopy(string sourceFolder, string targetFolder)
+        {
+            foreach (var fileInfo in new DirectoryInfo(sourceFolder).GetFiles())
+            {
+                var sourceFile = fileInfo.FullName;
+                var targetFile = Path.Combine(targetFolder, fileInfo.Name);
+
+                // Vérification date dernière modification du fichier
+                var sourceLastWriteTime = File.GetLastWriteTime(sourceFile);
+                if (File.Exists(targetFile))
+                {
+                    var targetLastWriteTime = File.GetLastWriteTime(targetFile);
+                    if (sourceLastWriteTime <= targetLastWriteTime)
+                    {
+                        continue;
+                    }
+                }
+
+                File.Copy(sourceFile, targetFile, true);
+            }
         }
     }
 }
