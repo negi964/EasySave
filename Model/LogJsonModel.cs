@@ -64,9 +64,10 @@ namespace EasySave.Model
             //A CHANGER IMMEDIATEMENT !
             string backupConfigFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Easysave";
             string file = Path.Combine(backupConfigFile, "config.json");
+            string logFilePath = Path.Combine(backupConfigFile, "log.json");
             var listLog = new List<LogJsonModel>();
 
-            if (!File.Exists("log.json"))
+            if (!File.Exists(@$"{logFilePath}"))
             {
 
                 try
@@ -82,7 +83,7 @@ namespace EasySave.Model
                         });
 
                     string logjson = JsonConvert.SerializeObject(listLog);
-                    File.WriteAllText("log.json", logjson);
+                    File.WriteAllText(logFilePath, logjson);
 
 
                 }
@@ -95,7 +96,7 @@ namespace EasySave.Model
             {
 
                 // Lire le fichier log.json existant
-                var json = File.ReadAllText("log.json");
+                var json = File.ReadAllText(logFilePath);
 
                 // Désérialiser le JSON en objet C#
                 var log = JsonConvert.DeserializeObject<List<LogJsonModel>>(json);
@@ -115,7 +116,7 @@ namespace EasySave.Model
                 var updatedJson = JsonConvert.SerializeObject(log, Formatting.Indented);
 
                 // Écrire le JSON mis à jour dans le fichier
-                File.WriteAllText("log.json", updatedJson);
+                File.WriteAllText(logFilePath, updatedJson);
             }
 
 
