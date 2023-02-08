@@ -17,7 +17,20 @@ namespace EasySave.View
         public void Show()
         {
 
-            Console.WriteLine("Choisissez le dossier ou ficher à copier\n ");
+            Console.WriteLine("Choisissez le type de sauvegarde : \n [1] - Complète \n [2] - Différentielle \n ");
+            string sType = Console.ReadLine();
+            int iType = 0;
+            bool isParsed = int.TryParse(sType, out iType);
+            while (isParsed == false || !Enum.IsDefined(typeof(SaveType), iType))
+            {
+                    Console.WriteLine("Renseignez une valeur existante :");
+                    sType = Console.ReadLine();
+                    isParsed = int.TryParse(sType, out iType);
+
+            }
+             iType = Int32.Parse(sType); 
+
+                Console.WriteLine("Choisissez le dossier ou ficher à copier\n ");
             string? source = Console.ReadLine();
             while (source == null)
             {
@@ -32,7 +45,7 @@ namespace EasySave.View
                 destination = Console.ReadLine();
             }
             var viewModel = new CopyViewModel();
-            viewModel.GetCopyModel(source, destination);
+            viewModel.GetCopyModel(source, destination, iType);
         }
     }
 }

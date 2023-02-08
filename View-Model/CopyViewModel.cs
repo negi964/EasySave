@@ -15,10 +15,21 @@ namespace EasySave.View_Model
         {
         }
 
-        public void GetCopyModel(string source, string destination)
+        public void GetCopyModel(string source, string destination, int type)
         {
+
+            
+                
             var copyModel = new CopyModel();
-            copyModel.FullCopy(source, destination);
+            switch (type)
+            {
+                case 1:
+                    copyModel.FullCopy(source, destination);
+                    break;
+                case 2:
+                    copyModel.DifferentialCopy(source, destination);
+                    break;
+            }
         }
     }
 }

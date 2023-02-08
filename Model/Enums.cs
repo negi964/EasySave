@@ -9,8 +9,8 @@ namespace EasySave.Model
 {
         public enum SaveType
         {
-            Complete,
-            Differential
+            Complete = 1,
+            Differential = 2
         }
     public enum Lang
     {
