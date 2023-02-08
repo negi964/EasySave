@@ -41,16 +41,16 @@ namespace EasySave.Model
 
                     if (backupConfigs.Count >= 5)
                     {
-                        throw new Exception("Le nombre maximum de travaux de sauvegarde est atteint veuillez en supprimer un");
+                        throw new Exception("Le seuil maximum est atteint, veuillez supprimer l'un des travaux de sauvegarde");
                     }
        
                 }
                 backupConfigs.Add(config);
 
                 File.WriteAllText(file, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
-                Console.WriteLine("Le travaux de sauvegarde est créé !");
+                       throw new Exception("Le travaux de sauvegarde est créé !");
 
-                return null;
+                
             }
             catch (Exception ex) 
             {
