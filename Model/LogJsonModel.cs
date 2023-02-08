@@ -13,58 +13,108 @@ using System.Runtime.Serialization.Formatters.Binary;
 using static EasySave.Model.SaveModel;
 using Newtonsoft.Json;
 using System.Security.Principal;
+using System.Net;
+using System.Xml.Linq;
 
 namespace EasySave.Model
 {
     public class LogJsonModel
     {
         public string Name { get; set; }
-        public DateTime TimeStamp { get; set; }
         public string FileSource { get; set; }
+
         public string FileTarget { get; set; }
-        public float FileSize  { get; set; }
-        public int TransfertTime { get; set;}
 
-        public Config config { get; set; }
+        public int FileSize { get; set; }
 
-        public LogJsonModel() { }
+        public int TransfertTime { get; set; }
 
-        public LogJsonModel(string name, string fileSource, string fileTarget, float fileSize, int transfertTime)
+        public string TimeStamp { get; set; }
+            
+
+
+        public BackupConfig backupconfig { get; set; }
+
+
+
+
+        public List<BackupConfig> ReadJsonConfig(string path)
         {
-            name = config.BackupName;
-             TimeStamp = DateTime.Now;
-            FileSource = config.SourceDirectory;
-            FileTarget = config.TargetDirectory;
-            FileSize = fileSize;
-            TransfertTime = transfertTime;
-        }
-
-        public Config ReadJsonConfig(string path)
-        {
+           
             string fileContent = File.ReadAllText(path);
 
-            Config JsonConfig = JsonConvert.DeserializeObject<Config>(fileContent);
+            List<BackupConfig> JsonConfig = JsonConvert.DeserializeObject<List<BackupConfig>>(fileContent);
             return JsonConfig;
         }
-        
-        
 
-        public void savelog(Config config)
+
+
+        public void SaveLog(long filesize, float transfertTime)
         {
-            
-            try
+           
+            //A CHANGER IMMEDIATEMENT !
+            var listConfig = new List<BackupConfig>();
+            listConfig = ReadJsonConfig("C:\\AppData\\Roaming\\backupconfigs.json");
+            var listLog = new List<LogJsonModel>();
+
+            if (!File.Exists("log.json"))
             {
-                using (StreamWriter writer = new StreamWriter(FileTarget))
+
+                try
                 {
-                    string logjson = ("Name : " +Name + "\n FileSource : " +FileSource + "\n FileTarget : " + FileTarget + "\n FileSize :"+FileSize + "\n TransfertTime :"+TransfertTime); 
-                     writer.WriteLine(logjson);
+                  
+                    foreach (var config in listConfig)
+                    {
+
+                        listLog.Add(new LogJsonModel
+                        {
+                            Name = config.BackupName,
+                            FileSource = config.SourceDirectory,
+                            FileTarget = config.TargetDirectory,
+                            FileSize = (int)filesize,
+                            TransfertTime = (int)transfertTime,
+                            TimeStamp = DateTime.Now.ToString(),
+                        });
+                    }
+
+                    string logjson = JsonConvert.SerializeObject(listLog);
+                    File.WriteAllText("log.json", logjson);
+
+
                 }
-            
+                catch (Exception ex)
+                {
+                    Console.WriteLine("\nUne erreur s'est produite lors de l'enregistrement du log journalier: " + ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine("\nUne erreur s'est produite lors de l'enregistrement du log journalier: " + ex.Message);
+
+                // Lire le fichier log.json existant
+                var json = File.ReadAllText("log.json");
+
+                // Désérialiser le JSON en objet C#
+                var log = JsonConvert.DeserializeObject<List<LogJsonModel>>(json);
+
+                // Ajouter un nouvel objet à la liste
+                log.Add(new LogJsonModel
+                {
+                    Name = backupconfig.BackupName,
+                    FileSource = backupconfig.SourceDirectory,
+                    FileTarget = backupconfig.TargetDirectory,
+                    FileSize = (int)filesize,
+                    TransfertTime = TransfertTime,
+                    TimeStamp = DateTime.Now.ToString()
+                });
+
+                // Sérialiser l'objet mis à jour en JSON
+                var updatedJson = JsonConvert.SerializeObject(log, Formatting.Indented);
+
+                // Écrire le JSON mis à jour dans le fichier
+                File.WriteAllText("log.json", updatedJson);
             }
+
+
 
         }
     }
