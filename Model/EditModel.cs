@@ -10,48 +10,68 @@ namespace EasySave.Model
 {
     public class EditModel
     {
+        private int configToModify;
         public EditModel()
         {
-
         }
 
-        /*public void EditSave()
+        public string GetListConfigToModify()
         {
             var backupConfigs = new List<Config>();
             string backupConfigFile = @"C:\..\..\AppData\Roaming\backupconfigs.json";
 
-            if (File.Exists(backupConfigFile))
+            for (int k = 0; k < backupConfigs.Count; k++)
             {
-                backupConfigs = JsonConvert.DeserializeObject<List<Config>>(File.ReadAllText(backupConfigFile));
+                throw new Exception($"{k + 1}. {backupConfigs[k].BackupName}");
             }
+            return null;
+        }
 
-            if (backupConfigs.Count == 0)
+        public string EditSave(string newBackupName, string newSourceDirectory, string newTargetDirectory, string newBackupType, int configToModify)
+        {
+            try
             {
-                Console.WriteLine("Il n'y a aucune configuration à modifier");
-                continue;
-            }
+                var backupConfigs = new List<Config>();
+                string backupConfigFile = @"C:\..\..\AppData\Roaming\backupconfigs.json";
 
-            for (int i = 0; i < backupConfigs.Count; i++)
-            {
-                for (int k = 0; k < backupConfigs.Count; k++)
+                if (File.Exists(backupConfigFile))
                 {
-                    Console.WriteLine($"{k + 1}. {backupConfigs[k].BackupName}");
+                    backupConfigs = JsonConvert.DeserializeObject<List<Config>>(File.ReadAllText(backupConfigFile));
                 }
 
-                if (configToModify > 0 && configToModify <= backupConfigs.Count)
+                if (backupConfigs.Count == 0)
                 {
-                    backupConfigs[configToModify - 1].BackupName = newBackupName;
-                    backupConfigs[configToModify - 1].SourceDirectory = newSourceDirectory;
-                    backupConfigs[configToModify - 1].TargetDirectory = newTargetDirectory;
-                    backupConfigs[configToModify - 1].BackupType = newBackupType;
+                    throw new Exception("Il n'y a aucune configuration à modifier");
+                }
 
-                    File.WriteAllText(backupConfigFile, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
-                }
-                else
+                for (int i = 0; i < backupConfigs.Count; i++)
                 {
-                    Console.WriteLine("La configuration n'a pas été trouvée");
+                    for (int k = 0; k < backupConfigs.Count; k++)
+                    {
+                        throw new Exception($"{k + 1}. {backupConfigs[k].BackupName}");
+                    }
+
+                    if (configToModify > 0 && configToModify <= backupConfigs.Count)
+                    {
+                        backupConfigs[configToModify - 1].BackupName = newBackupName;
+                        backupConfigs[configToModify - 1].SourceDirectory = newSourceDirectory;
+                        backupConfigs[configToModify - 1].TargetDirectory = newTargetDirectory;
+                        backupConfigs[configToModify - 1].BackupType = newBackupType;
+
+                        File.WriteAllText(backupConfigFile,
+                            JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
+                    }
+                    else
+                    {
+                        throw new Exception("La configuration n'a pas été trouvée");
+                    }
                 }
+                return null;
             }
-        }*/
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
     }
 }

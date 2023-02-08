@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EasySave.View_Model;
 
 namespace EasySave.View
 {
@@ -15,7 +16,7 @@ namespace EasySave.View
 
         public void Show()
         {
-            /*while (true)
+            while (true)
             {
                 Console.WriteLine("1. Modifier une sauvegarde");
                 Console.WriteLine("2. Quitter");
@@ -29,12 +30,13 @@ namespace EasySave.View
 
                 if (choice == 1)
                 {
-                    if (backupConfigs.Count == 0)
-                    {
-                        Console.WriteLine("Il n'y a aucune configuration à modifier");
-                        continue;
-                    }
-                        
+                    var editViewModel = new EditViewModel();
+
+                    editViewModel.GetListConfig();
+                    Console.Write("Quelle config voulez vous modifier : ");
+
+                    int configToModify = int.Parse(Console.ReadLine());
+
                     Console.Write("Nouveau nom : ");
                     string newBackupName = Console.ReadLine();
 
@@ -46,10 +48,12 @@ namespace EasySave.View
 
                     Console.Write("Nouveau type de sauvegarde : ");
                     string newBackupType = Console.ReadLine();
-                        
+
+                    editViewModel.GetEditModel(newBackupName, newSourceDirectory, newTargetDirectory, newBackupType, configToModify);
                 }
 
-            }*/
+
+            }
         }
     }
 }
