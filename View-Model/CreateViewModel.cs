@@ -16,16 +16,17 @@ namespace EasySave.View_Model
 
         public void GetCreateModel(string backupName, string sourceDirectory, string targetDirectory, string backupType)
         {
-            var createModel = new CreateModel();
-            var message = createModel.CreateSave(backupName, sourceDirectory, targetDirectory, backupType);
-            if (message != null)
+            try
             {
-                var error = new ErrorView();
-                error.ShowError(message);
-                var saveView = new SaveView();
-                saveView.Welcome();
+                CreateModel createModel = new CreateModel();
+                var message = createModel.CreateSave(backupName, sourceDirectory, targetDirectory, backupType);
             }
-            
+            catch (Exception ex)
+            {
+                ErrorView error = new ErrorView();
+                error.ShowError(ex.Message);
+               
+            }
         }
     }
 }

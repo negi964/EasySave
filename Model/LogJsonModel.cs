@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using System.Security.Principal;
 using System.Net;
 using System.Xml.Linq;
+using System.Reflection;
 
 namespace EasySave.Model
 {
@@ -27,34 +28,41 @@ namespace EasySave.Model
 
         public int FileSize { get; set; }
 
-        public int TransfertTime { get; set; }
+        public double TransfertTime { get; set; }
 
         public string TimeStamp { get; set; }
             
 
+        public List<string> GetConfigFile(string path)
+        {
+            string fileContent = File.ReadAllText(path);
 
-        public Config Config { get; set; }
-
-
-
-
-        public List<Config> ReadJsonConfig(string path)
+            List<Config> JsonConfig = JsonConvert.DeserializeObject<List<Config>>(fileContent);
+            List<string> ConfigFiles = new List<string>();
+            foreach(var config in JsonConfig)
+            {
+                ConfigFiles.Add($"{config.BackupName},\n Source : {config.SourceDirectory},\n Destination : {config.TargetDirectory}, \n Type : {config.BackupType}\n");
+            }
+            return ConfigFiles;
+        }
+        public Config ReadJsonConfig(string path, int index)
         {
            
             string fileContent = File.ReadAllText(path);
 
             List<Config> JsonConfig = JsonConvert.DeserializeObject<List<Config>>(fileContent);
-            return JsonConfig;
+            var obj = JsonConfig[index];
+            return obj;
         }
 
 
 
-        public void SaveLog(long filesize, float transfertTime)
+        public void SaveLog(long filesize, double transfertTime,Config config)
         {
            
             //A CHANGER IMMEDIATEMENT !
-            var listConfig = new List<Config>();
-            listConfig = ReadJsonConfig("C:\\AppData\\Roaming\\backupconfigs.json");
+            string backupConfigFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Easysave";
+            string file = Path.Combine(backupConfigFile, "config.json");
             var listLog = new List<LogJsonModel>();
 
             if (!File.Exists("log.json"))
@@ -62,10 +70,6 @@ namespace EasySave.Model
 
                 try
                 {
-                  
-                    foreach (var config in listConfig)
-                    {
-
                         listLog.Add(new LogJsonModel
                         {
                             Name = config.BackupName,
@@ -75,7 +79,6 @@ namespace EasySave.Model
                             TransfertTime = (int)transfertTime,
                             TimeStamp = DateTime.Now.ToString(),
                         });
-                    }
 
                     string logjson = JsonConvert.SerializeObject(listLog);
                     File.WriteAllText("log.json", logjson);
@@ -99,11 +102,11 @@ namespace EasySave.Model
                 // Ajouter un nouvel objet à la liste
                 log.Add(new LogJsonModel
                 {
-                    Name = Config.BackupName,
-                    FileSource = Config.SourceDirectory,
-                    FileTarget = Config.TargetDirectory,
+                    Name = config.BackupName,
+                    FileSource = config.SourceDirectory,
+                    FileTarget = config.TargetDirectory,
                     FileSize = (int)filesize,
-                    TransfertTime = TransfertTime,
+                    TransfertTime = transfertTime,
                     TimeStamp = DateTime.Now.ToString()
                 });
 

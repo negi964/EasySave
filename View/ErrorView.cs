@@ -17,6 +17,7 @@ namespace EasySave.View
         {
             Console.WriteLine(message);
             Console.ReadKey();
+            SaveView mainView = new SaveView();
         }
 
     }

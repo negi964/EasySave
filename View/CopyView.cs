@@ -16,36 +16,72 @@ namespace EasySave.View
         }
         public void Show()
         {
-
-            Console.WriteLine("Choisissez le type de sauvegarde : \n [1] - Complète \n [2] - Différentielle \n ");
-            string sType = Console.ReadLine();
-            int iType = 0;
-            bool isParsed = int.TryParse(sType, out iType);
-            while (isParsed == false || !Enum.IsDefined(typeof(SaveType), iType))
-            {
-                    Console.WriteLine("Renseignez une valeur existante :");
-                    sType = Console.ReadLine();
-                    isParsed = int.TryParse(sType, out iType);
-
-            }
-             iType = Int32.Parse(sType); 
-
-                Console.WriteLine("Choisissez le dossier ou ficher à copier\n ");
-            string? source = Console.ReadLine();
-            while (source == null)
-            {
-                Console.WriteLine("Renseignez un chemin :");
-                source = Console.ReadLine();
-            }
-            Console.WriteLine("Renseignez le chemin de destination");
-            string? destination = Console.ReadLine();
-            while (destination == null)
-            {
-                Console.WriteLine("Renseignez une destination :");
-                destination = Console.ReadLine();
-            }
             var viewModel = new CopyViewModel();
-            viewModel.GetCopyModel(source, destination, iType);
+            List<string> list = viewModel.GetConfigs();
+
+            List<int> selectedWorks = new List<int>();
+            bool done = false;
+            int i = 0;
+            string line = $"{i} \n";
+            string count = "";
+
+            while (!done)
+            {
+                i = 0;
+                Console.WriteLine("Choisissez un ou plusieurs travaux de sauvegarde (5 pour terminer) : \n");
+                Console.WriteLine($"Actuellement selectionnés :{count}");
+                foreach (var config in list)
+                {
+                    line = $"{i} \n";
+                    Console.WriteLine($"{line}{config}");
+                    i++;
+
+                }
+
+
+
+                string input = Console.ReadLine();
+                int option;
+
+
+                if (int.TryParse(input, out option) && option >= 0 && option <= list.Count() - 1 || option == 5)
+                {
+                    if (option == 5)
+                    {
+                        done = true;
+                    }
+                    else
+                    {
+                        selectedWorks.Add(option);
+                        count += $"[{option}],  ";
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Entrée non valide. Veuillez réessayer.");
+                }
+
+
+                //    Console.WriteLine("Choisissez le type de sauvegarde : \n [1] - Complète \n [2] - Différentielle \n ");
+                //    string sType = Console.ReadLine();
+                //    int iType = 0;
+                //    bool isParsed = int.TryParse(sType, out iType);
+                //    while (isParsed == false || !Enum.IsDefined(typeof(SaveType), iType))
+                //    {
+                //        Console.WriteLine("Renseignez une valeur existante :");
+                //        sType = Console.ReadLine();
+                //        isParsed = int.TryParse(sType, out iType);
+
+                //    }
+                //    iType = Int32.Parse(sType);
+
+
+                //}
+
+
+            }
+
+            viewModel.GetCopyModel(selectedWorks);
         }
     }
 }

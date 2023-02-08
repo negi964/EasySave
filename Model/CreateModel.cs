@@ -17,8 +17,7 @@ namespace EasySave.Model
 
         public string CreateSave (string backupName, string sourceDirectory, string targetDirectory, string backupType)
         {
-            try
-            {
+            
                 var config = new Config();
                 config.BackupName = backupName;
                 config.SourceDirectory = sourceDirectory;
@@ -48,14 +47,10 @@ namespace EasySave.Model
                 backupConfigs.Add(config);
 
                 File.WriteAllText(file, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
-                       throw new Exception("Le travaux de sauvegarde est créé !");
 
-                
-            }
-            catch (Exception ex) 
-            {
-                return ex.Message;
-            }
+                return "Le travail de sauvegarde est créé !";
+            
+            
         }
     }
 }

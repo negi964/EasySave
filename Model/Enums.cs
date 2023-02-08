@@ -12,6 +12,7 @@ namespace EasySave.Model
             Complete = 1,
             Differential = 2
         }
+
     public enum Lang
     {
 

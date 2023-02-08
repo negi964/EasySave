@@ -5,20 +5,28 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace EasySave.Model
 {
     public class CopyModel
     {
-        public void FullCopy(string sourceFile, string targetFile)
+        public void FullCopy(Config config)
         {
+            string sourceFile = config.SourceDirectory;
+            string targetFile = config.TargetDirectory;
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
             if (sourceFile != null)
             {
                 var dir = new DirectoryInfo(sourceFile);
 
                 if (!dir.Exists)
                 {
+
+
                     var fileinfo = new FileInfo(sourceFile);
                     string filename = Path.GetFileName(sourceFile);
                     var fileSize = fileinfo.Length;
@@ -48,17 +56,26 @@ namespace EasySave.Model
                             }
                         }
                     }
+                    watch.Stop();
+                    double timeElapsed = watch.Elapsed.TotalSeconds;
+                    var logJsonModel = new LogJsonModel();
+                    logJsonModel.SaveLog(fileSize, timeElapsed, config);
+
                 }
 
                 else
                 {
-                     
+
                     var sourceFolderInfo = new DirectoryInfo(sourceFile);
                     long totalSize = GetDirectorySize(sourceFolderInfo);
                     long totalBytes = 0;
                     CopyDirectory(sourceFolderInfo, targetFile, totalSize, totalBytes);
-                   
+                    watch.Stop();
+                    double timeElapsed = watch.Elapsed.TotalSeconds;
+                    var logJsonModel = new LogJsonModel();
+                    logJsonModel.SaveLog(totalSize, timeElapsed, config);
                 }
+
             }
         }
 
@@ -121,8 +138,10 @@ namespace EasySave.Model
 
             return size;
         }
-        public void DifferentialCopy(string sourceFolder, string targetFolder)
+        public void DifferentialCopy(Config config)
         {
+            string sourceFolder = config.SourceDirectory;
+            string targetFolder = config.TargetDirectory;
             foreach (var fileInfo in new DirectoryInfo(sourceFolder).GetFiles())
             {
                 var sourceFile = fileInfo.FullName;

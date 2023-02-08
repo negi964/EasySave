@@ -31,35 +31,45 @@ namespace EasySave.View
             int numOption = 0;
             numOption = Welcome();
 
-            switch (numOption)
+            while (numOption != 9)
             {
-                case 1:
-                    Console.WriteLine("choix du changement de langue");
-                    break;
+                switch (numOption)
+                {
+                    case 1:
+                        Console.WriteLine("choix du changement de langue");
+                        numOption = Welcome();
+                        break;
 
-                case 2:
-                    Console.WriteLine("choix de la création de sauvegarde");
-                    _createSaveView.Show();
-                    break;
+                    case 2:
+                        Console.WriteLine("choix de la création de sauvegarde");
+                        _createSaveView.Show();
+                        numOption = Welcome();
+                        break;
 
-                case 3:
-                    Console.WriteLine("choix de la modification de sauvegarde");
-                    _editSaveView.Show();
-                    break;
+                    case 3:
+                        Console.WriteLine("choix de la modification de sauvegarde");
+                        _editSaveView.Show();
+                        numOption = Welcome();
+                        break;
 
-                case 4:
-                    Console.WriteLine("choix de la suppression de sauvegarde");
-                    _deleteSaveView.Show();
-                    break;
+                    case 4:
+                        Console.WriteLine("choix de la suppression de sauvegarde");
+                        _deleteSaveView.Show();
+                        numOption = Welcome();
+                        break;
 
-                case 5:
-                    Console.WriteLine("Lancement d'une sauvegarde");
-                    _copyView.Show();
-                    break;
-
-                default:
-                    numOption = Welcome();
-                    break;
+                    case 5:
+                        Console.WriteLine("Lancement d'une sauvegarde");
+                        _copyView.Show();
+                        numOption = Welcome();
+                        break;
+                    case 9:
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        numOption = Welcome();
+                        break;
+                }
             }
         }
 
