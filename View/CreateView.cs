@@ -17,22 +17,6 @@ namespace EasySave.View
 
         public void Show()
         {
-            while (true)
-            {
-                Console.WriteLine("1. Créer une sauvegarde");
-                Console.WriteLine("2. Quitter");
-                Console.WriteLine("");
-                Console.Write("Quel est votre choix : ");
-
-                int choice = int.Parse(Console.ReadLine());
-
-                if (choice == 2)
-                {
-                    break;
-                }
-
-                if (choice == 1)
-                {
                     Console.Write("Nom : ");
                     string backupName = Console.ReadLine();
 
@@ -45,11 +29,10 @@ namespace EasySave.View
                     Console.Write("Type de sauvegarde : ");
                     string backupType = Console.ReadLine();
 
-
                     var createViewModel = new CreateViewModel();
                     createViewModel.GetCreateModel(backupName, sourceDirectory, targetDirectory, backupType);
-                }
-            }
+                
+            
         }
     }
 

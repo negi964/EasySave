@@ -22,7 +22,8 @@ namespace EasySave.View_Model
             {
                 var error = new ErrorView();
                 error.ShowError(message);
-                GetCreateModel(backupName, sourceDirectory, targetDirectory, backupType);
+                var saveView = new SaveView();
+                saveView.Welcome();
             }
 
         }

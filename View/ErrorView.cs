@@ -16,6 +16,7 @@ namespace EasySave.View
         public void ShowError(string message) 
         {
             Console.WriteLine(message);
+            Console.ReadKey();
         }
 
     }

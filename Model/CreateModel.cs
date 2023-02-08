@@ -26,19 +26,30 @@ namespace EasySave.Model
                 config.BackupType = backupType;
 
                 var backupConfigs = new List<Config>();
-                string backupConfigFile = @"C:\..\..\AppData\Roaming\backupconfigs.json";
+                string backupConfigFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Easysave";
 
-                if (File.Exists(backupConfigFile))
+                if (!Directory.Exists(backupConfigFile))
                 {
-                    backupConfigs = JsonConvert.DeserializeObject<List<Config>>(File.ReadAllText(backupConfigFile));
+                    Directory.CreateDirectory(backupConfigFile);
                 }
 
-                if (backupConfigs.Count == 5)
-                {
-                    throw new Exception("Le nombre maximum est atteint veuillez en supprimer une"); 
-                }
+                string file = Path.Combine(backupConfigFile, "config.json");
 
-                File.WriteAllText(backupConfigFile, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
+                if (File.Exists(file))
+                {
+                    backupConfigs = JsonConvert.DeserializeObject<List<Config>>(File.ReadAllText(file));
+
+                    if (backupConfigs.Count >= 5)
+                    {
+                        throw new Exception("Le nombre maximum de travaux de sauvegarde est atteint veuillez en supprimer un");
+                        
+                    }
+       
+                }
+                backupConfigs.Add(config);
+
+                File.WriteAllText(file, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
+                Console.WriteLine("Le travaux de sauvegarde est créé !");
 
                 return null;
             }
