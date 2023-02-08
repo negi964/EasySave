@@ -2,6 +2,7 @@
 using EasySave.View_Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -9,8 +10,11 @@ using System.Threading.Tasks;
 
 namespace EasySave.View
 {
+
     public class CopyView
     {
+        LangHelper langHelper = new LangHelper();
+
         public CopyView()
         {
         }

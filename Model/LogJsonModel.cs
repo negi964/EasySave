@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 //NewtonsoftJson
 using NewtonsoftJson = Newtonsoft.Json;
-using EasySave.Model;
 //serialisation
 using System.IO;
 using System.IO.Compression;
@@ -16,11 +15,13 @@ using System.Security.Principal;
 using System.Net;
 using System.Xml.Linq;
 using System.Reflection;
+using System.Globalization;
 
 namespace EasySave.Model
 {
     public class LogJsonModel
     {
+        LangHelper langHelper = new LangHelper();
         public string Name { get; set; }
         public string FileSource { get; set; }
 
@@ -87,7 +88,7 @@ namespace EasySave.Model
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("\nUne erreur s'est produite lors de l'enregistrement du log journalier: " + ex.Message);
+                    Console.Write($"{langHelper._rm.GetString("Error Daily Logs", CultureInfo.CurrentUICulture)}" + ex.Message);
                 }
             }
             else

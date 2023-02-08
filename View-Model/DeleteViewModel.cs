@@ -21,19 +21,22 @@ namespace EasySave.View_Model
             return deleteModel.GetListConfig();
         }
 
-        public void SetNumConfigModel(int numConfig)
+        public string SetNumConfigModel(int numConfig)
         {
-            var message = deleteModel.DeleteSave(numConfig);
-            if (message != null)
+            try
+            {
+                var message = deleteModel.DeleteSave(numConfig);
+                return message;
+            }
+            catch (Exception ex)
             {
                 var error = new ErrorView();
-                error.ShowError(message);
-                var saveView = new SaveView();
-                saveView.Welcome();
+                error.ShowError(ex.Message);
+                return null;
             }
 
         }
     }
 
-    
+
 }

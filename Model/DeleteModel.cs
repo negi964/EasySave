@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace EasySave.Model
 {
     public class DeleteModel
     {
+        LangHelper langHelper = new LangHelper();
         public DeleteModel()
         {
 
@@ -18,7 +20,7 @@ namespace EasySave.Model
         {
             List<string> listConfig = new List<string>();
             var backupConfigs = new List<Config>();
-            
+
             string backupConfigFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Easysave";
             string file = Path.Combine(backupConfigFile, "config.json");
 
@@ -36,32 +38,25 @@ namespace EasySave.Model
 
         public string DeleteSave(int configToDelete)
         {
-            try
-            {
-                var backupConfigs = new List<Config>();
-                string backupConfigFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Easysave";
-                string file = Path.Combine(backupConfigFile, "config.json");
 
-                if (File.Exists(file))
-                {
-                    backupConfigs = JsonConvert.DeserializeObject<List<Config>>(File.ReadAllText(file));
-                }
-
-                if (configToDelete > 0 && configToDelete <= backupConfigs.Count)
-                {
-                    backupConfigs.RemoveAt(configToDelete - 1);
-                    File.WriteAllText(file, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
-                    return "La configuration a été supprimée avec succès";
-                }
-                else
-                {
-                    throw new Exception("La configuration n'a pas été trouvée");
-                }
-            }
-            catch (Exception e)
+            var backupConfigs = new List<Config>();
+            string backupConfigFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Easysave";
+            string file = Path.Combine(backupConfigFile, "config.json");
+            string message = "";
+            if (configToDelete == null)
             {
-                return e.Message;
+                throw new Exception("NotFound");
+
             }
+            if (configToDelete > 0 && configToDelete <= backupConfigs.Count)
+            {
+                backupConfigs.RemoveAt(configToDelete - 1);
+                File.WriteAllText(file, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
+                message=($"{langHelper._rm.GetString("successDelete", CultureInfo.CurrentUICulture)}\n");
+            }
+            return message;
         }
+
     }
 }
+

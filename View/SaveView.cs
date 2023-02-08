@@ -21,6 +21,7 @@ namespace EasySave.View
         private EditView _editSaveView;
         private DeleteView _deleteSaveView;
         private SaveViewModel _saveViewModel;
+        private ChangeLangView _changeLangView;
 
         public SaveView()
         {
@@ -28,16 +29,17 @@ namespace EasySave.View
             _createSaveView = new CreateView();
             _editSaveView = new EditView();
             _deleteSaveView = new DeleteView();
+            _changeLangView = new ChangeLangView();
             int numOption = 0;
             numOption = Welcome();
 
             while (numOption != 9)
             {
-                switch (numOption)
-                {
+                switch(numOption)
+                    {
                     case 1:
                         Console.WriteLine("choix du changement de langue");
-                        numOption = Welcome();
+                        _changeLangView.Show();
                         break;
 
                     case 2:
@@ -73,12 +75,13 @@ namespace EasySave.View
             }
         }
 
+
         public int Welcome()
         {
             Console.Title = "EasySave";
             Console.Clear();
 
-            ResourceManager rm = new ResourceManager("EasySave.Lang.Ressource", Assembly.GetExecutingAssembly());
+            ResourceManager rm = new ResourceManager("EasySave.Lang.Resources", Assembly.GetExecutingAssembly());
 
             Console.WriteLine(" _______     ___           _______.____    ____  _______.     ___   ____    ____  _______ \r\n|   ____|   /   \\         /       |\\   \\  /   / /       |    /   \\  \\   \\  /   / |   ____|\r\n|  |__     /  ^  \\       |   (----` \\   \\/   / |   (----`   /  ^  \\  \\   \\/   /  |  |__   \r\n|   __|   /  /_\\  \\       \\   \\      \\_    _/   \\   \\      /  /_\\  \\  \\      /   |   __|  \r\n|  |____ /  _____  \\  .----)   |       |  | .----)   |    /  _____  \\  \\    /    |  |____ \r\n|_______/__/     \\__\\ |_______/        |__| |_______/    /__/     \\__\\  \\__/     |_______|\r\n\n                                                                                          ");
             Console.WriteLine($"{rm.GetString("Welcome", CultureInfo.CurrentUICulture)}\n");

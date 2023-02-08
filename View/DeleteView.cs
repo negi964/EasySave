@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EasySave.View_Model;
+using System.Globalization;
+using EasySave.Model;
 
 namespace EasySave.View
 {
     public class DeleteView
     {
+        LangHelper langHelper = new LangHelper();
 
         public void Show()
         {
@@ -22,11 +25,11 @@ namespace EasySave.View
                 Console.WriteLine(x);
             }
 
-            Console.Write("Quelle configuration souhaitez-vous supprimer : ");
+            Console.Write($"{langHelper._rm.GetString("Delete", CultureInfo.CurrentUICulture)}\n");
 
             int numConfig = Int32.Parse(Console.ReadLine());
 
-            deleteViewModel.SetNumConfigModel(numConfig);
+            Console.WriteLine(deleteViewModel.SetNumConfigModel(numConfig));
         }
     }
 }

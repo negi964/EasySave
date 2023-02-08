@@ -10,6 +10,8 @@ namespace EasySave.Model
     public class CreateModel
     {
       LogJsonModel LogJsonModel = new LogJsonModel();
+        LangHelper langHelper = new LangHelper();
+
         public CreateModel()
         {
 
@@ -40,12 +42,13 @@ namespace EasySave.Model
 
                     if (backupConfigs.Count >= 5)
                     {
-                        throw new Exception("Le seuil maximum est atteint, veuillez supprimer l'un des travaux de sauvegarde");
+                        throw new Exception("MaxConf");
                     }
        
                 }
                 backupConfigs.Add(config);
                 File.WriteAllText(file, JsonConvert.SerializeObject(backupConfigs, Formatting.Indented));
+                       throw new Exception("SaveCreated");
 
                 return "Le travail de sauvegarde est créé !";
             

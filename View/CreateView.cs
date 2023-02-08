@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,34 +13,34 @@ namespace EasySave.View
 
     public class CreateView
     {
+        LangHelper langHelper = new LangHelper();
 
         public CreateView() { }
 
         public void Show()
         {
-            Console.Write("Nom : ");
+            Console.Write($"{langHelper._rm.GetString("Name")}\n");
             string backupName = Console.ReadLine();
 
-            Console.Write("Chemin source : ");
+            Console.Write($"{langHelper._rm.GetString("sourceDirectory")}\n");
             string sourceDirectory = Console.ReadLine();
-
             while (!Directory.Exists(sourceDirectory))
             {
-                Console.Write("Le chemin source n'existe pas, veuillez entrer un chemin à nouveau :");
+                Console.Write("Le chemin de source n'existe pas, veuillez entrer un chemin à nouveau :");
                 sourceDirectory = Console.ReadLine();
             }
-
-            Console.Write("Chemin destination : ");
+            Console.Write($"{langHelper._rm.GetString("targetDirectory")}\n");
             string targetDirectory = Console.ReadLine();
-
             while (!Directory.Exists(targetDirectory))
             {
                 Console.Write("Le chemin de destination n'existe pas, veuillez entrer un chemin à nouveau :");
                 targetDirectory = Console.ReadLine();
             }
-
-            Console.Write("Type de sauvegarde [1]Complet / [2]Differentiel): ");
+            Console.Write($"{langHelper._rm.GetString("backuptype")}\n");
             string backupType = Console.ReadLine();
+
+
+
 
             int iType = 0;
             bool isParsed = int.TryParse(backupType, out iType);
