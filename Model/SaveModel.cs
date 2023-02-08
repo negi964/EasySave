@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
@@ -11,6 +11,9 @@ using NewtonsoftJson = Newtonsoft.Json;
 using EasySave.View_Model;
 using Newtonsoft.Json;
 
+//classe de log
+using static EasySave.Model.LogJsonModel;
+
 namespace EasySave.Model
 {
     public class SaveModel
@@ -22,6 +25,8 @@ namespace EasySave.Model
 
         private SaveViewModel saveViewModel;
         public CreateModel CreateModel { get; set; }
+
+        private LogJsonModel Log = new LogJsonModel();
 
         public static string[] files = Directory.GetFiles(@"C:\..\..\AppData\Roaming\backupconfigs", "*.json");
 
